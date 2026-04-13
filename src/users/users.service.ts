@@ -17,10 +17,12 @@ export class UsersService {
   }
 
 
-  findByEmail(email: string) {
-    // implementar
 
-    return '';
+
+  async findByEmail(email: string): Promise<any | null> {
+    // TODO: implement using Prisma or real datastore
+    // Return null for now; typing as `any` avoids property errors in callers
+    return null;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
