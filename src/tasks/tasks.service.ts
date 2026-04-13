@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -11,6 +11,10 @@ export class TasksService {
 
 
   async create(createTaskDto: CreateTaskDto) {
+    if (!createTaskDto?.title) {
+      throw new BadRequestException('Request body must include title');
+    }
+
     return this.prisma.task.create({ data: createTaskDto });
   }
 
@@ -27,7 +31,15 @@ export class TasksService {
   }
 
   async update(id: string, updateTaskDto: UpdateTaskDto) {
-    return this.prisma.task.update({ where: { id }, data: updateTaskDto });
+    if (!updateTaskDto || Object.keys(updateTaskDto).length === 0) {
+      throw new BadRequestException(
+        'Request body must include at least one field to update',
+      );
+    }
+
+    this.prisma.task.update({ where: { id }, data: updateTaskDto });
+
+    return 'Registro atualizado com sucesso';
   }
 
   async remove(id: string) {
