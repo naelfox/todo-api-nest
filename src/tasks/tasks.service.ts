@@ -37,7 +37,7 @@ export class TasksService {
       );
     }
 
-    this.prisma.task.update({ where: { id }, data: updateTaskDto });
+    await this.prisma.task.update({ where: { id }, data: updateTaskDto });
 
     return 'Registro atualizado com sucesso';
   }
